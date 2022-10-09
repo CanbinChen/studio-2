@@ -1,0 +1,64 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": { "text": "Countries PM2.5" },
+  "data": {
+    "url": "https://raw.githubusercontent.com/CanbinChen/studio-2/main/Air%20Pollution.csv/data/Region%20PM2.5.csv"
+  },
+  "selection": {
+    "continent_highlight": {
+      "type": "multi",
+      "fields": ["Region"],
+      "bind": "legend"
+      }
+  },
+  "params": [
+    {
+      "name": "year_start",
+      "value": 2010,
+      "bind": {
+        "input": "range",
+        "min": 2010,
+        "max": 2017,
+        "step": 1,
+        "name": "Minimum year: "
+      }
+    },
+    {
+      "name": "year_end",
+      "value": 2017,
+      "bind": {
+        "input": "range",
+        "min": 2010,
+        "max": 2017,
+        "step": -1,
+        "name": "Maximum year: "
+      }
+    }
+  ],
+  "transform": [
+    {"filter": "datum.Year > year_start -1"},
+    {"filter": "datum.Year < year_end + 1"}
+  ],
+
+  "mark": "line",
+  "encoding": {
+    "x": {"field":"Year","type": "nominal"},
+    "y": { "field": "Air", "type": "quantitative","title":"PM2.5"},
+    "color":{
+      "field":"Region",
+      "type": "nominal"
+
+    },
+    "opacity":{
+      "condition": {"selection": "continent_highlight", "value": 1.0},"value": 0.3
+
+    },
+    "tooltip":[
+      {"field":"Region","type": "nominal","title":"Region Area"},
+      {"field":"Year","type": "nominal","title":"Year"},
+      { "field": "Air", "type": "quantitative","title":"PM2.5"}
+
+    ]
+    
+  }
+}
